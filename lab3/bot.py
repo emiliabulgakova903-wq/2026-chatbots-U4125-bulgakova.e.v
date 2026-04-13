@@ -769,7 +769,7 @@ def main() -> None:
     app.post_init = set_commands
 
     logger.info("Бот запущен. Ctrl+C для остановки.")
-    app.run_polling(allowed_updates=Update.ALL_TYPES)
+    app.run_polling(allowed_updates=Update.ALL_TYPES, drop_pending_updates=True)
 
 
 if __name__ == "__main__":
