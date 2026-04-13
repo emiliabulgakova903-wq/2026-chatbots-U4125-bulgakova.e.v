@@ -6,5 +6,5 @@ meta:
 build:
   requirementsPath: lab3/requirements.txt
 run:
-  script: python3 lab3/bot.py
+  scriptName: lab3/bot.py
   persistenceMount: /data

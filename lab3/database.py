@@ -76,7 +76,7 @@ def init_db() -> None:
     logger.info("База данных инициализирована.")
 
 
-def _import_csv_if_empty(csv_path: str = "equipment.csv") -> None:
+def _import_csv_if_empty(csv_path: str = os.path.join(_HERE, "equipment.csv")) -> None:
     """
     Импортирует оборудование из CSV в таблицу equipment, если она пуста.
     Выполняется автоматически при init_db() — только при первом запуске.
