@@ -690,7 +690,13 @@ async def unknown_message(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
 def main() -> None:
     db.init_db()
 
+    # Два отдельных экземпляра: один для обычных запросов (sendMessage и т.д.),
+    # второй для long-polling getUpdates. Общий экземпляр вызывает дедлок.
     request_config = HTTPXRequest(
+        connect_timeout=30.0, read_timeout=30.0,
+        write_timeout=30.0,   pool_timeout=30.0,
+    )
+    get_updates_request = HTTPXRequest(
         connect_timeout=30.0, read_timeout=30.0,
         write_timeout=30.0,   pool_timeout=30.0,
     )
@@ -698,7 +704,7 @@ def main() -> None:
         ApplicationBuilder()
         .token(BOT_TOKEN)
         .request(request_config)
-        .get_updates_request(request_config)
+        .get_updates_request(get_updates_request)
         .build()
     )
 
