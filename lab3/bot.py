@@ -41,12 +41,16 @@ import database as db
 import equipment as eq
 
 # ── Переменные окружения ──────────────────────────────────────────────────────
+# Загружаем .env, если он есть (для локального запуска)
 load_dotenv()
-BOT_TOKEN: str        = os.getenv("BOT_TOKEN", "")
+
+# Сначала проверяем переменные окружения (Amvera), затем .env
+token = os.environ.get("BOT_TOKEN")
+BOT_TOKEN: str = token or ""
 PROXY_URL: str | None = os.getenv("PROXY_URL") or None
 
 if not BOT_TOKEN:
-    raise ValueError("Токен бота не найден. Укажите BOT_TOKEN в файле .env.")
+    raise ValueError("Токен бота не найден. Укажите BOT_TOKEN в настройках Amvera или в .env")
 
 # ── Логирование ───────────────────────────────────────────────────────────────
 logging.basicConfig(
