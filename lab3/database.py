@@ -17,8 +17,9 @@ logger = logging.getLogger(__name__)
 
 # Путь к базе данных:
 # если папка /data существует (сервер Amvera) — используем её,
-# иначе — текущая директория (локальный запуск).
-DB_PATH = "/data/tasks.db" if os.path.exists("/data") else "tasks.db"
+# иначе — файл рядом с database.py (локальный запуск).
+_HERE = os.path.dirname(os.path.abspath(__file__))
+DB_PATH = "/data/tasks.db" if os.path.exists("/data") else os.path.join(_HERE, "tasks.db")
 
 
 def get_connection() -> sqlite3.Connection:

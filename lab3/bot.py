@@ -16,7 +16,11 @@ import csv
 import io
 import logging
 import os
+import sys
 from datetime import datetime
+
+# Гарантируем, что папка lab3/ есть в sys.path при любом способе запуска
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from dotenv import load_dotenv
 from telegram import (
