@@ -192,20 +192,26 @@ async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE) -> N
 # ══════════════════════════════════════════════════════════════════════════════
 
 async def cmd_start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    logger.info("cmd_start вызван от user_id=%s", update.effective_user.id)
     user = update.effective_user
-    await update.message.reply_text(
-        f"👋 Привет, *{user.first_name}*!\n\n"
-        "Я — *Tracker Production Improvement Service Bot*.\n\n"
-        "📌 *Команды:*\n"
-        "• /add — добавить задачу\n"
-        "• /tasks — список активных задач\n"
-        "• /equipment — список оборудования\n"
-        "• /addequipment — добавить новое оборудование\n"
-        "• /search — поиск оборудования\n"
-        "• /report — отчёт по выполненным задачам\n"
-        "• /help — справка",
-        parse_mode="Markdown",
-    )
+    try:
+        await update.message.reply_text(
+            f"👋 Привет, *{user.first_name}*!\n\n"
+            "Я — *Tracker Production Improvement Service Bot*.\n\n"
+            "📌 *Команды:*\n"
+            "• /add — добавить задачу\n"
+            "• /tasks — список активных задач\n"
+            "• /equipment — список оборудования\n"
+            "• /addequipment — добавить новое оборудование\n"
+            "• /search — поиск оборудования\n"
+            "• /report — отчёт по выполненным задачам\n"
+            "• /help — справка",
+            parse_mode="Markdown",
+        )
+        logger.info("cmd_start: ответ отправлен user_id=%s", user.id)
+    except Exception as e:
+        logger.error("cmd_start: ошибка при отправке ответа: %s", e, exc_info=True)
+        raise
 
 
 async def cmd_help(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
