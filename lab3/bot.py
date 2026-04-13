@@ -170,6 +170,19 @@ async def send_reminder(context: ContextTypes.DEFAULT_TYPE) -> None:
 
 
 # ══════════════════════════════════════════════════════════════════════════════
+#  ГЛОБАЛЬНЫЙ ОБРАБОТЧИК ОШИБОК
+# ══════════════════════════════════════════════════════════════════════════════
+
+async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Логирует все необработанные исключения и уведомляет пользователя."""
+    logger.error("Исключение при обработке обновления:", exc_info=context.error)
+    if isinstance(update, Update) and update.effective_message:
+        await update.effective_message.reply_text(
+            "⚠️ Произошла внутренняя ошибка. Попробуйте ещё раз или напишите /start."
+        )
+
+
+# ══════════════════════════════════════════════════════════════════════════════
 #  БАЗОВЫЕ КОМАНДЫ
 # ══════════════════════════════════════════════════════════════════════════════
 
@@ -730,6 +743,7 @@ def main() -> None:
     app.add_handler(CallbackQueryHandler(callback_delete, pattern=r"^delete:"))
     app.add_handler(CallbackQueryHandler(callback_report, pattern=r"^report:"))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, unknown_message))
+    app.add_error_handler(error_handler)
 
     # ── Восстановление напоминаний ────────────────────────────────────────────
     for task in db.get_pending_reminders():

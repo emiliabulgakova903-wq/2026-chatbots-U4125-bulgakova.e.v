@@ -312,27 +312,29 @@ def get_completed_tasks(user_id: int, days: int) -> list[sqlite3.Row]:
     if days > 0:
         # Вычисляем нижнюю границу периода
         since = (datetime.now() - timedelta(days=days)).strftime("%Y-%m-%d %H:%M")
-        rows = get_connection().execute(
-            """
-            SELECT * FROM tasks
-            WHERE user_id   = ?
-              AND completed = 1
-              AND created_at >= ?
-            ORDER BY created_at DESC
-            """,
-            (user_id, since),
-        ).fetchall()
+        with get_connection() as conn:
+            rows = conn.execute(
+                """
+                SELECT * FROM tasks
+                WHERE user_id   = ?
+                  AND completed = 1
+                  AND created_at >= ?
+                ORDER BY created_at DESC
+                """,
+                (user_id, since),
+            ).fetchall()
     else:
         # days == 0 означает «за всё время»
-        rows = get_connection().execute(
-            """
-            SELECT * FROM tasks
-            WHERE user_id   = ?
-              AND completed = 1
-            ORDER BY created_at DESC
-            """,
-            (user_id,),
-        ).fetchall()
+        with get_connection() as conn:
+            rows = conn.execute(
+                """
+                SELECT * FROM tasks
+                WHERE user_id   = ?
+                  AND completed = 1
+                ORDER BY created_at DESC
+                """,
+                (user_id,),
+            ).fetchall()
 
     logger.info(
         "Запрос отчёта: пользователь %d, период %d дн., найдено %d задач.",
