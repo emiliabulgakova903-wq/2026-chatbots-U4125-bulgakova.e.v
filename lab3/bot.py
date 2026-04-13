@@ -37,6 +37,7 @@ from telegram.ext import (
     ContextTypes,
     ConversationHandler,
     MessageHandler,
+    TypeHandler,
     filters,
 )
 from telegram.request import HTTPXRequest
@@ -733,6 +734,12 @@ def main() -> None:
         fallbacks=[CommandHandler("cancel", aeq_cancel)],
         per_message=False,
     )
+
+    # ── Диагностика: логируем ВСЕ входящие обновления ────────────────────────
+    async def _log_update(update: object, context: ContextTypes.DEFAULT_TYPE) -> None:
+        logger.info(">>> UPDATE RECEIVED: %s", update)
+
+    app.add_handler(TypeHandler(object, _log_update), group=-1)
 
     # ── Регистрация ───────────────────────────────────────────────────────────
     app.add_handler(CommandHandler("start",     cmd_start))
