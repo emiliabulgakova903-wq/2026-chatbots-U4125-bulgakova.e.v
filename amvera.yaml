@@ -7,3 +7,4 @@ build:
   requirementsPath: lab3/requirements.txt
 run:
   scriptName: lab3/bot.py
+  persistenceMount: /data
