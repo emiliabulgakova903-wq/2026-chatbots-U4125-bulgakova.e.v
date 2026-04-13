@@ -1,0 +1,10 @@
+meta:
+  environment: python
+  toolchain:
+    name: pip
+    version: "3.10"
+build:
+  requirementsPath: lab3/requirements.txt
+run:
+  script: python3 lab3/bot.py
+  persistenceMount: /data
