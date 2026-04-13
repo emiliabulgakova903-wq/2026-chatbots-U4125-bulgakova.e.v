@@ -3,6 +3,7 @@ database.py — модуль для работы с базой данных SQLi
 Содержит все операции создания, чтения, обновления и удаления задач (CRUD).
 """
 
+import os
 import sqlite3
 import logging
 from datetime import datetime, timedelta
@@ -11,7 +12,7 @@ from typing import Optional
 logger = logging.getLogger(__name__)
 
 # Путь к файлу базы данных
-DB_PATH = "tasks.db"
+DB_PATH = "/data/tasks.db" if os.path.exists("/data") else "tasks.db"
 
 
 def get_connection() -> sqlite3.Connection:
