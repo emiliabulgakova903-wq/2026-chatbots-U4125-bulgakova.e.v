@@ -15,8 +15,12 @@ from typing import Optional
 
 logger = logging.getLogger(__name__)
 
-# Путь к файлу базы данных
-DB_PATH = "tasks.db"
+# Путь к файлу базы данных.
+# /data — примонтированный постоянный диск на Amvera (указан в amvera.yaml).
+# Локально папка /data может отсутствовать, поэтому используем переменную окружения
+# DATA_DIR (можно задать в .env), а по умолчанию — текущая директория.
+_data_dir = os.getenv("DATA_DIR", "/data")
+DB_PATH = os.path.join(_data_dir, "tasks.db")
 
 
 def get_connection() -> sqlite3.Connection:
